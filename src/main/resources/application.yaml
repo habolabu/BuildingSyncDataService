@@ -1,0 +1,8 @@
+# spring config
+spring:
+
+  # mongo db config
+  data:
+    mongodb:
+      uri: ${MONGODB_URI}
+      database: ${MONGODB_DATABASE}
