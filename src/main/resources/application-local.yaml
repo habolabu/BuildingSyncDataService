@@ -24,9 +24,3 @@ spring:
     concurrentConsumers: ${RABBITMQ_CONCURRENT_CONSUMERS:3}
     maxConcurrentConsumers: ${RABBITMQ_MAX_CONCURRENT_CONSUMERS:10}
     receiveTimeout: ${RABBITMQ_RECEIVE_TIMEOUT:100000}
-
-# log
-logging:
-  level:
-    root: debug
-    org.springframework.data.mongodb.core.MongoTemplate: debug

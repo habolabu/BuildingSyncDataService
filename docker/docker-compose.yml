@@ -1,0 +1,43 @@
+version: "1.0"
+
+volumes:
+  building_sync_data:
+  building_sync_gradle_data:
+
+networks:
+  query_database_net:
+    external: true
+  rabbitmq_net:
+    external: true
+
+services:
+  building_sync_service:
+    container_name: "building-sync-service"
+    build:
+      dockerfile: ./docker/Dockerfile
+      context: ..
+    ports:
+      - ${BUILDING_SYNC_HOST_PORT}:${BUILDING_SYNC_CONTAINER_PORT}
+    volumes:
+      - building_sync_data:${BUILDING_SYNC_SERVICE_VOLUMES}
+      - building_sync_gradle_data:${BUILDING_SYNC_GRADLE_VOLUMES}
+    env_file:
+      - .env
+    restart: unless-stopped
+    networks:
+      - query_database_net
+      - rabbitmq_net
+    environment:
+      SERVER_PORT: ${SERVER_PORT}
+      APPLICATION_NAME: ${APPLICATION_NAME}
+      MONGODB_URI: ${MONGODB_URI}
+      MONGODB_DATABASE: ${MONGODB_DATABASE}
+      RABBITMQ_USERNAME: ${RABBITMQ_USERNAME}
+      RABBITMQ_PASSWORD: ${RABBITMQ_PASSWORD}
+      RABBITMQ_VIRTUAL_HOST: ${RABBITMQ_VIRTUAL_HOST}
+      RABBITMQ_HOST: ${RABBITMQ_HOST}
+      RABBITMQ_PORT: ${RABBITMQ_PORT}
+      RABBITMQ_IGNORE_DECLARATION_EXCEPTION: ${RABBITMQ_IGNORE_DECLARATION_EXCEPTION}
+      RABBITMQ_CONCURRENT_CONSUMERS: ${RABBITMQ_CONCURRENT_CONSUMERS}
+      RABBITMQ_MAX_CONCURRENT_CONSUMERS: ${RABBITMQ_MAX_CONCURRENT_CONSUMERS}
+      RABBITMQ_RECEIVE_TIMEOUT: ${RABBITMQ_RECEIVE_TIMEOUT}
